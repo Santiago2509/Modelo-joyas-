@@ -123,7 +123,7 @@ function build() {
 export function Necklace() {
   const n = useMemo(build, [])
   return (
-    <group position={[0, 0.3, 0]} scale={0.6}>
+    <group position={[0, 0.44, 0]} scale={0.6}>
       <Wire points={n.rail} radius={0.014} />
       <Chain points={n.back} count={62} />
       <InstancedMetal matrices={n.bezels} geometry={BEZEL} />
