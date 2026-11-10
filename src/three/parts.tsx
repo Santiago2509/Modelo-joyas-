@@ -120,7 +120,9 @@ export function InstancedGems({
 export function InstancedMetal({ matrices, geometry }: { matrices: THREE.Matrix4[]; geometry: THREE.BufferGeometry }) {
   const metal = useMetal()
   const ref = useInstances(matrices)
-  return <instancedMesh ref={ref} args={[geometry, metal, matrices.length]} />
+  // El material va como prop (no en `args`): así, al cambiar de metal, la malla
+  // no se reconstruye y las instancias conservan su posición.
+  return <instancedMesh ref={ref} args={[geometry, undefined, matrices.length]} material={metal} />
 }
 
 const LINK = new THREE.TorusGeometry(0.022, 0.0065, 8, 20)
