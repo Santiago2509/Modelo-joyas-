@@ -8,6 +8,7 @@ import { MetalProvider } from './parts'
 import { Ring } from './models/Ring'
 import { Pendant } from './models/Pendant'
 import { Earrings } from './models/Earrings'
+import { Necklace } from './models/Necklace'
 import { GlbModel } from './GlbModel'
 
 const MIN_DISTANCE = 1.3
@@ -28,6 +29,7 @@ function Model({ product }: { product: Product }) {
   if (product.modelUrl) return <GlbModel url={product.modelUrl} />
   if (product.model === 'ring') return <Ring />
   if (product.model === 'pendant') return <Pendant />
+  if (product.model === 'necklace') return <Necklace />
   return <Earrings />
 }
 

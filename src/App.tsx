@@ -15,6 +15,15 @@ const GLYPHS: Record<string, React.ReactNode> = {
       <ellipse cx="24" cy="34" rx="6" ry="8" />
     </>
   ),
+  necklace: (
+    <>
+      <path d="M7 5c0 16 7 25 17 25s17-9 17-25" />
+      <path d="M24 30v3M14 25l-2 3M34 25l2 3" />
+      <ellipse cx="24" cy="38" rx="3.5" ry="5" />
+      <circle cx="11" cy="30.5" r="2.5" />
+      <circle cx="37" cy="30.5" r="2.5" />
+    </>
+  ),
   earrings: (
     <>
       <path d="M15 8v12M33 8v12" />
@@ -111,7 +120,7 @@ export default function App() {
 
         <section className="collection" id="coleccion">
           <p className="eyebrow">Colección destacada</p>
-          <h2>Tres piezas, vistas como en la vitrina</h2>
+          <h2>Piezas para ver como en la vitrina</h2>
           <div className="cards">
             {PRODUCTS.map((p, i) => (
               <button

@@ -3,7 +3,7 @@
 Catálogo web de joyería con visor 3D interactivo: cada pieza se puede girar 360°,
 acercar hasta el detalle y ver en oro amarillo, blanco o rosa en tiempo real.
 
-Arranca con 3 piezas destacadas (anillo solitario, colgante de esmeralda y aretes de perla).
+Arranca con 4 piezas destacadas (anillo solitario, colgante de esmeralda, aretes de perla y collar de gala con zafiros).
 
 ## Tecnología
 
@@ -33,7 +33,7 @@ npm run build    # genera /dist listo para publicar
 
 ## Cómo poner una joya real
 
-Los tres modelos actuales son de demostración. Para usar una pieza real:
+Los modelos actuales son de demostración. Para usar una pieza real:
 
 1. Exporta el modelo a **`.glb`** (desde Rhino/MatrixGold/Blender, o el resultado del escaneo).
 2. Cópialo a `public/models/`, por ejemplo `public/models/anillo-01.glb`.

@@ -177,7 +177,7 @@ h1 { font-family: var(--serif); font-weight: 500; font-size: clamp(2.4rem, 4.4vw
 /* ── Colección ── */
 .collection { padding: clamp(40px, 6vw, 88px) clamp(16px, 4vw, 56px) 0; text-align: center; scroll-margin-top: 8px; }
 h2 { font-family: var(--serif); font-weight: 500; font-size: clamp(1.8rem, 3.2vw, 2.6rem); margin-top: 8px; }
-.cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(12px, 2vw, 28px); margin-top: 36px; }
+.cards { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(12px, 2vw, 28px); margin-top: 36px; }
 .card {
   display: flex;
   flex-direction: column;
@@ -217,12 +217,16 @@ footer .brand-name { color: var(--ink); margin-bottom: 8px; }
 .fine { font-size: 0.8rem; margin-top: 14px; opacity: 0.8; }
 
 /* ── Móvil ── */
+@media (max-width: 1150px) {
+  .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
 @media (max-width: 900px) {
   .showcase { grid-template-columns: 1fr; }
   .stage { height: 62vh; min-height: 360px; }
-  .cards, .features { grid-template-columns: 1fr; }
+  .features { grid-template-columns: 1fr; }
 }
 @media (max-width: 560px) {
+  .cards { grid-template-columns: 1fr; }
   .brand-tag, nav a[href='#visor'] { display: none; }
   .brand-name { font-size: 1.3rem; }
 }

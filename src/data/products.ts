@@ -11,7 +11,7 @@ export const BRAND_TAGLINE = 'Alta Joyería'
 /** Número de WhatsApp con código de país, sin "+" ni espacios. Vacío = sin enlace. */
 export const WHATSAPP = ''
 
-export type ModelKind = 'ring' | 'pendant' | 'earrings'
+export type ModelKind = 'ring' | 'pendant' | 'earrings' | 'necklace'
 
 export interface Product {
   id: string
@@ -89,5 +89,22 @@ export const PRODUCTS: Product[] = [
     ],
     model: 'earrings',
     camera: [1.5, 0.6, 4.2],
+  },
+  {
+    id: 'collar-imperial',
+    name: 'Collar Imperial',
+    category: 'Collar de gala',
+    tagline: 'Hecho para ser recordado.',
+    description:
+      'Rivière de diamantes graduados con nueve colgantes de zafiro oval en halo de diamantes y flecos de brillantes. Una pieza de gala de inspiración real.',
+    price: 'USD 86.000',
+    specs: [
+      { label: 'Zafiros', value: '9 ovales · 21,40 ct total' },
+      { label: 'Diamantes', value: '≈ 250 brillantes · 34,80 ct total' },
+      { label: 'Largo', value: '42 cm · cierre de seguridad' },
+      { label: 'Peso', value: '68 g' },
+    ],
+    model: 'necklace',
+    camera: [1.0, 0.1, 5.7],
   },
 ]

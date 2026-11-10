@@ -1,4 +1,4 @@
-import { createContext, useContext, useMemo } from 'react'
+import { createContext, useContext, useLayoutEffect, useMemo, useRef } from 'react'
 import { MeshRefractionMaterial } from '@react-three/drei'
 import * as THREE from 'three'
 import { useStudioTexture } from './studio'
@@ -45,7 +45,9 @@ const BRILLIANT_SMALL = brilliantGeometry(8)
 const GEMS = {
   diamond: { color: new THREE.Color(1.7, 1.7, 1.7), ior: 2.42, aberration: 0.012 },
   emerald: { color: new THREE.Color('#19b266').multiplyScalar(1.4), ior: 1.58, aberration: 0.004 },
+  sapphire: { color: new THREE.Color('#1c46e0').multiplyScalar(1.9), ior: 1.77, aberration: 0.006 },
 } as const
+export type GemKind = keyof typeof GEMS
 
 type GemProps = {
   kind?: keyof typeof GEMS
@@ -71,6 +73,73 @@ export function Gem({ kind = 'diamond', small = false, ...props }: GemProps) {
       />
     </mesh>
   )
+}
+
+/* ── Instancias (muchas piedras o engastes con una sola malla) ── */
+
+function useInstances(matrices: THREE.Matrix4[]) {
+  const ref = useRef<THREE.InstancedMesh>(null)
+  useLayoutEffect(() => {
+    matrices.forEach((m, i) => ref.current!.setMatrixAt(i, m))
+    ref.current!.instanceMatrix.needsUpdate = true
+    ref.current!.computeBoundingSphere()
+  }, [matrices])
+  return ref
+}
+
+/** Muchas gemas iguales. Cada matriz parte de una gema con la mesa hacia +Y. */
+export function InstancedGems({
+  matrices,
+  kind = 'diamond',
+  small = false,
+}: {
+  matrices: THREE.Matrix4[]
+  kind?: GemKind
+  small?: boolean
+}) {
+  const env = useStudioTexture()
+  const ref = useInstances(matrices)
+  const g = GEMS[kind]
+  return (
+    <instancedMesh ref={ref} args={[small ? BRILLIANT_SMALL : BRILLIANT, undefined, matrices.length]}>
+      <MeshRefractionMaterial
+        envMap={env as THREE.CubeTexture}
+        color={g.color}
+        ior={g.ior}
+        bounces={small ? 2 : 3}
+        fresnel={0.6}
+        aberrationStrength={g.aberration}
+        fastChroma
+        toneMapped={false}
+      />
+    </instancedMesh>
+  )
+}
+
+/** Muchas piezas metálicas iguales (biseles, monturas). */
+export function InstancedMetal({ matrices, geometry }: { matrices: THREE.Matrix4[]; geometry: THREE.BufferGeometry }) {
+  const metal = useMetal()
+  const ref = useInstances(matrices)
+  return <instancedMesh ref={ref} args={[geometry, metal, matrices.length]} />
+}
+
+const LINK = new THREE.TorusGeometry(0.022, 0.0065, 8, 20)
+
+/** Cadena de eslabones reales siguiendo una curva por los puntos dados. */
+export function Chain({ points, count }: { points: [number, number, number][]; count: number }) {
+  const matrices = useMemo(() => {
+    const curve = new THREE.CatmullRomCurve3(points.map((p) => new THREE.Vector3(...p)))
+    const x = new THREE.Vector3(1, 0, 0)
+    const twist = new THREE.Quaternion().setFromAxisAngle(x, Math.PI / 2)
+    const scale = new THREE.Vector3(1.45, 1, 1)
+    return Array.from({ length: count }, (_, i) => {
+      const t = i / (count - 1)
+      const q = new THREE.Quaternion().setFromUnitVectors(x, curve.getTangentAt(t))
+      if (i % 2) q.multiply(twist)
+      return new THREE.Matrix4().compose(curve.getPointAt(t), q, scale)
+    })
+  }, [points, count])
+  return <InstancedMetal matrices={matrices} geometry={LINK} />
 }
 
 /* ── Utilidades ────────────────────────────────────────── */
